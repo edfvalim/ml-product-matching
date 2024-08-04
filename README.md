@@ -1,7 +1,7 @@
 
 # ml-product-matching
 
-This repository contains the code and data to reproduce the experiments from the paper "Analysis and Performance Evaluation of Machine Learning Techniques for Product Matching." The study investigates various machine learning techniques applied to product matching through a systematic literature review and experiments using datasets from the WDC Product Data Corpus and Magellan Data Repository.
+This repository contains the code and data to reproduce the experiments from the paper ["Analysis and Performance Evaluation of Machine Learning Techniques for Product Matching."](https://repositorio.ufms.br/handle/123456789/9103) The study investigates various machine learning techniques applied to product matching through a systematic literature review and experiments using datasets from the WDC Product Data Corpus and Magellan Data Repository.
 
 ## Overview
 
