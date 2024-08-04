@@ -6,10 +6,37 @@ import model.loss as module_loss
 import model.metric as module_metric
 import model.model as module_arch
 from parse_config import ConfigParser
-
 from utils import calculate_prec_rec_f1
+import os
+import csv
+import json
 
-
+def save_log_to_csv(log, config):
+    config_fields = {
+        'name': config['name'],
+        'lr': config['optimizer']['args']['lr'],
+        'bs': config['data_loader']['args']['batch_size'],
+        'epochs': config['trainer']['epochs']
+    }
+    
+    base_dir = config['trainer']['save_dir']
+    csv_file_path = os.path.abspath(os.path.join(base_dir, 'test_metrics.csv'))
+    
+    os.makedirs(os.path.dirname(csv_file_path), exist_ok=True)
+    
+    file_exists = os.path.isfile(csv_file_path)
+    
+    try:
+        with open(csv_file_path, 'a', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            if not file_exists:
+                header = ['name', 'lr', 'bs', 'epochs'] + list(log.keys())
+                writer.writerow(header)
+            row = list(config_fields.values()) + list(log.values())
+            writer.writerow(row)
+    except IOError as e:
+        print(f"Error writing to CSV file: {e}")
+        
 def main(config):
     logger = config.get_logger('test')
 
@@ -96,6 +123,15 @@ def main(config):
     log.update(additional_log)
 
     logger.info(log)
+
+     # Save log to JSON file
+    with open(f'{config.save_dir}/metrics.json', 'w') as f:
+        json.dump(log, f, indent=4)
+
+    # Save log to CSV file
+    save_log_to_csv(log, config)
+
+        
 
 
 if __name__ == '__main__':
